@@ -6,6 +6,8 @@ namespace google_breakpad {
     class ExceptionHandler;
 }
 
+typedef void(*LoggingSave)(const QString&);
+
 class CrashListener {
     Q_DISABLE_COPY(CrashListener)
 
@@ -15,16 +17,21 @@ public:
 
     static QString getCacheDir();
 
-    const QStringList& getCache() const {
-        return cacheLogs;
-    }
-
     const QString& getAccessKey() const {
         return accessKey;
     }
 
+    void setLogSaveCallback(LoggingSave callback) {
+        loggingSave = callback;
+    }
+
+    LoggingSave getLogSaveCallback() const {
+        return loggingSave;
+    }
+
 private:
     google_breakpad::ExceptionHandler* eh;
-    QStringList cacheLogs;
     QString accessKey;
+
+    LoggingSave loggingSave;
 };
