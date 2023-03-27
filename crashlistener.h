@@ -12,7 +12,7 @@ class CrashListener {
     Q_DISABLE_COPY(CrashListener)
 
 public:
-    explicit CrashListener(const QString& accessKey);
+    explicit CrashListener(QString accessKey);
     ~CrashListener();
 
     static QString getCacheDir();

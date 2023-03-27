@@ -5,6 +5,8 @@
 #include <qprocess.h>
 #include <qcoreapplication.h>
 
+#include <utility>
+
 #include "handler/exception_handler.h"
 
 #ifdef __GNUC__
@@ -25,18 +27,20 @@ bool dumpResultsHandler(const wchar_t*, const wchar_t* minidump_id, void* contex
         listener->getLogSaveCallback()(CrashListener::getCacheDir() + "/" + minidumpFileName + ".log");
     }
 
-    QStringList args;
-    args << CrashListener::getCacheDir();
-    args << minidumpFileName;
-    args << listener->getAccessKey();
-    args << QCoreApplication::applicationName();
-    QProcess::startDetached(BUGREPORT_EXECUTABLE, args);
+    if (!listener->getAccessKey().isEmpty()) {
+        QStringList args;
+        args << CrashListener::getCacheDir();
+        args << minidumpFileName;
+        args << listener->getAccessKey();
+        args << QCoreApplication::applicationName();
+        QProcess::startDetached(BUGREPORT_EXECUTABLE, args);
+    }
 
     return succeeded;
 }
 
-CrashListener::CrashListener(const QString& accessKey)
-    : accessKey(accessKey)
+CrashListener::CrashListener(QString accessKey)
+    : accessKey(std::move(accessKey))
     , loggingSave(nullptr)
 {
 #ifdef __GNUC__
