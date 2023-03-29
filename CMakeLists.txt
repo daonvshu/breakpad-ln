@@ -8,10 +8,10 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 
 if (WIN32)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../breakpad-bin/includes/windows)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes/windows)
 add_compile_definitions(BUGREPORT_EXECUTABLE="bugreport.exe")
 else()
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../breakpad-bin/includes/linux)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes/linux)
 add_compile_definitions(BUGREPORT_EXECUTABLE="./bugreport")
 endif()
 
